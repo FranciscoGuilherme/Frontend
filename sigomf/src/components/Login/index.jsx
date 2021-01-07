@@ -1,14 +1,26 @@
 import React, { useState, useContext } from "react"
+import {
+  Grid,
+  Button,
+  Typography,
+  TextField,
+  makeStyles
+} from "@material-ui/core"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
-import { Grid, Button, Typography, TextField } from "@material-ui/core"
 
-import { Icon } from "~/components/GlobalStyle"
-
-import auth from "~/auth"
 import useErrors from "~/hooks/useErrors"
+import { Icon } from "~/components/GlobalStyle"
 import LoginContext from "~/contexts/LoginContext"
+import auth from "~/auth";
+
+const useStyles = makeStyles({
+  button: {
+    float: "right"
+  }
+})
 
 export default function Login(props) {
+  const classes = useStyles()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, validateFields, thereIsNoErrors] = useErrors(useContext(LoginContext))
@@ -25,11 +37,19 @@ export default function Login(props) {
       <form
         onSubmit={event => {
           event.preventDefault()
-
           if (thereIsNoErrors()) {
-            auth.login(() => {
-              props.history.push("/dashboard")
-            })
+            auth.login({email, password})
+              .then((response) => {
+                console.log(response)
+                if (response.data.hasOwnProperty('token')) {
+                  localStorage.setItem('token', response.data.token)
+
+                  props.history.push("/dashboard")
+                }
+              })
+              .catch((error) => {
+                console.log(error)
+              })
           }
         }}
       >
@@ -70,7 +90,12 @@ export default function Login(props) {
           onBlur={validateFields}
         />
 
-        <Button type="submit" variant="contained" color="primary">
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.button}
+        >
           Login
         </Button>
       </form>

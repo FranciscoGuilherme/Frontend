@@ -1,11 +1,21 @@
-class Auth {
-  constructor() {
-    this.authenticated = false
-  }
+import env from "react-dotenv";
 
-  login(cb) {
-    this.authenticated = true
-    cb()
+const axios = require('axios').default;
+
+class Auth {
+  async login({email, password}) {
+    return new Promise((resolve, reject) => {
+      axios.post(env.SIGOMS_USERS_LOGIN, {
+        username: email,
+        password: password
+      })
+        .then((response) => {
+          resolve(response)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 
   logout(cb) {
@@ -14,7 +24,7 @@ class Auth {
   }
 
   isAuthenticated() {
-    return this.authenticated
+    return localStorage.getItem('token') !== null;
   }
 }
 
