@@ -7,7 +7,7 @@ import { Container } from "@material-ui/core"
 
 import Login from "~/components/Login"
 import Register from "~/components/Register"
-import { Dashboard } from "~/components/Dashboard"
+import Dashboard from "~/components/Dashboard"
 import ProtectedRoute from "~/components/ProtectedRoute"
 
 import LoginContext from "~/contexts/LoginContext"
@@ -41,8 +41,9 @@ export default function App() {
             </LoginContext.Provider>
 
             <Route exact path="/register" component={Register} />
-            <ProtectedRoute exact path="/dashboard" component={Dashboard} />
         </Container>
+
+        <ProtectedRoute exact path="/dashboard" component={Dashboard} />
       </LoaderContext.Provider>
     </StyledLoader>
   )

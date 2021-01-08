@@ -1,25 +1,45 @@
-import React from "react"
-import { Button } from "@material-ui/core"
+import React from 'react'
 
-import auth from "~/auth";
+import {
+  Grid,
+  Container,
+  makeStyles,
+  CssBaseline
+} from '@material-ui/core'
 
-export const Dashboard = (props) => {
+import Menu from "~/components/Dashboard/Menu"
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  }
+}))
+
+export default function Dashboard() {
+  const classes = useStyles()
+
   return (
-    <>
-      <h1>Dashboard</h1>
-      <form
-        onSubmit={event => {
-          event.preventDefault()
+    <div className={classes.root}>
+      <CssBaseline />
+      <Menu />
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
 
-          auth.logout(() => {
-            props.history.push("/")
-          })
-        }}
-      >
-        <Button type="submit" variant="contained" color="primary">
-          Logout
-        </Button>
-      </form>
-    </>
-  )
+          </Grid>
+        </Container>
+      </main>
+    </div>
+  );
 }
