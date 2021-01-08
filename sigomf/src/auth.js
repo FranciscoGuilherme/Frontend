@@ -4,6 +4,7 @@ const axios = require('axios').default;
 
 class Auth {
   async login({email, password}) {
+    console.log(email, password)
     return new Promise((resolve, reject) => {
       axios.post(env.SIGOMS_USERS_LOGIN, {
         username: email,

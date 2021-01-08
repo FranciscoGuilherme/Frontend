@@ -1,17 +1,12 @@
 import React, { useState, useContext } from "react"
-import {
-  Grid,
-  Button,
-  Typography,
-  TextField,
-  makeStyles
-} from "@material-ui/core"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import { Grid, Button, Typography, TextField, makeStyles } from "@material-ui/core"
 
+import auth from "~/auth";
 import useErrors from "~/hooks/useErrors"
 import { Icon } from "~/components/GlobalStyle"
-import LoginContext from "~/contexts/LoginContext"
-import auth from "~/auth";
+import LoginContext from "~/contexts/LoginContext";
+import LoaderContext from "~/contexts/LoaderContext";
 
 const useStyles = makeStyles({
   button: {
@@ -23,6 +18,7 @@ export default function Login(props) {
   const classes = useStyles()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const loader = useContext(LoaderContext)
   const [error, validateFields, thereIsNoErrors] = useErrors(useContext(LoginContext))
 
   return (
@@ -38,9 +34,11 @@ export default function Login(props) {
         onSubmit={event => {
           event.preventDefault()
           if (thereIsNoErrors()) {
+            console.log(email, password)
+            loader(true)
             auth.login({email, password})
               .then((response) => {
-                console.log(response)
+                loader(false)
                 if (response.data.hasOwnProperty('token')) {
                   localStorage.setItem('token', response.data.token)
 
@@ -48,6 +46,7 @@ export default function Login(props) {
                 }
               })
               .catch((error) => {
+                loader(false)
                 console.log(error)
               })
           }

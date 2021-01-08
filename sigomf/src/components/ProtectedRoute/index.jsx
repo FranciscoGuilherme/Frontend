@@ -8,9 +8,10 @@ export default function Dashboard({component: Component, ...rest}) {
     <Route
       {...rest}
       render={(props) => {
-        if (auth.isAuthenticated()) {
+        return <Component {...props} />
+        /*if (auth.isAuthenticated()) {
           return <Component {...props} />
-        }
+        }*/
 
         return (
             <Redirect to={
