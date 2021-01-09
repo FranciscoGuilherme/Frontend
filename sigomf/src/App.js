@@ -15,6 +15,8 @@ import LoaderContext from "~/contexts/LoaderContext"
 
 import { LoginModel } from "~/models/LoginModel"
 
+import "./App.css"
+
 const StyledLoader = styled(LoadingOverlay)`
   .MyLoader_overlay {
     background: rgb(249 249 249 / 0.5);
@@ -24,17 +26,13 @@ const StyledLoader = styled(LoadingOverlay)`
 export default function App() {
   const [loadSpinner, setLoadSpinner] = useState(false)
 
-  function changeLoadState(bool) {
-    setLoadSpinner(bool)
-  }
-
   return (
     <StyledLoader
       active={loadSpinner}
       spinner={<BeatLoader />}
       classNamePrefix='MyLoader_'
     >
-      <LoaderContext.Provider value={changeLoadState}>
+      <LoaderContext.Provider value={(bool) => {setLoadSpinner(bool)}}>
         <Container component="main" maxWidth="sm">
             <LoginContext.Provider value={{ password: LoginModel.validatePassword }}>
               <Route exact path="/" component={Login} />

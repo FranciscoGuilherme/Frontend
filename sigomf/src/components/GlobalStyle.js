@@ -1,7 +1,16 @@
-import { Avatar } from "@material-ui/core"
 import styled from "styled-components"
+import { ICON_COLOR, ICON_DEFAULT_RADIUS } from "~/UI/colors"
 
-export const Icon = styled(Avatar)`
+export const Icon = styled.div`
+  width: 40px;
+  height: 40px;
   margin: auto;
-  background-color: #f50057;
+  color: white;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${ICON_DEFAULT_RADIUS};
+  background-color: ${ICON_COLOR};
 `

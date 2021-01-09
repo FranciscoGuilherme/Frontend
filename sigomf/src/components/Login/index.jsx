@@ -34,7 +34,6 @@ export default function Login(props) {
         onSubmit={event => {
           event.preventDefault()
           if (thereIsNoErrors()) {
-            console.log(email, password)
             loader(true)
             auth.login({email, password})
               .then((response) => {
