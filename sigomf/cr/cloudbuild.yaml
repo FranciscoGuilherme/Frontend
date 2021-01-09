@@ -1,0 +1,37 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Build"
+    args:
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
+      - "."
+
+  - name: "gcr.io/cloud-builders/docker"
+    id: "Push"
+    args:
+      - "push"
+      - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "Deploy"
+    args:
+      - "run"
+      - "deploy"
+      - "sigomf"
+      - "--image"
+      - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
+      - "--platform"
+      - "gke"
+      - "--cluster"
+      - "cluster-puc"
+      - "--cluster-location"
+      - "us-east1-b"
+      - "--port"
+      - "80"
+      - "--namespace"
+      - "sigomf-puc"
+      - "--min-instances"
+      - "1"
+      - "--update-secrets"
+      - "SIGOMS_USERS_LOGIN=puc-sigoms-env:SIGOMS_USERS_LOGIN"
