@@ -4,7 +4,7 @@ steps:
     args:
       - "build"
       - "-t"
-      - "gcr.io/$PROJECT_ID/Frontend:$SHORT_SHA"
+      - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
       - "--build-arg"
       - "SIGOMS_USERS_LOGIN=${_SIGOMS_USERS_LOGIN}"
       - "."
@@ -13,16 +13,16 @@ steps:
     id: "Push"
     args:
       - "push"
-      - "gcr.io/$PROJECT_ID/Frontend:$SHORT_SHA"
+      - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
 
   - name: "gcr.io/cloud-builders/gcloud"
     id: "Deploy"
     args:
       - "run"
       - "deploy"
-      - "Frontend"
+      - "sigomf"
       - "--image"
-      - "gcr.io/$PROJECT_ID/Frontend:$SHORT_SHA"
+      - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
       - "--platform"
       - "gke"
       - "--cluster"
