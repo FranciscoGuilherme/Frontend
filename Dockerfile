@@ -22,7 +22,11 @@ WORKDIR ${ROOT_APP_PATH}
 # ------[Criação de variáveis de ambiente]------
 # ----------------------------------------------
 
-RUN ./docker/environment.sh \
+COPY . ${ROOT_APP_PATH}
+
+RUN apk add --no-cache --upgrade bash
+RUN chmod +x ${ROOT_APP_PATH}/docker/environment.sh
+RUN /bin/bash ${ROOT_APP_PATH}/docker/environment.sh \
     ${APP_ENV} \
     ${ROOT_APP_PATH} \
     ${SIGOMS_USERS_LOGIN}
@@ -30,8 +34,6 @@ RUN ./docker/environment.sh \
 # ----------------------------------------------
 # --------[Instalação das dependências]---------
 # ----------------------------------------------
-
-COPY . ${ROOT_APP_PATH}
 
 RUN npm install --silent
 RUN npm install react-scripts@3.3.1 -g --silent

@@ -1,11 +1,9 @@
-import env from "react-dotenv";
-
 const axios = require('axios').default;
 
 class Auth {
   async login({email, password}) {
     return new Promise((resolve, reject) => {
-      axios.post(env.SIGOMS_USERS_LOGIN, {
+      axios.post(process.env.SIGOMS_USERS_LOGIN, {
         username: email,
         password: password
       })
