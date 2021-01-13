@@ -5,26 +5,43 @@ FROM node:13-alpine as build
 # ----------------------------------------------
 
 ARG APP_ENV
+ARG ROOT_APP_PATH=/app
 ARG SIGOMS_USERS_LOGIN
 
 ENV APP_ENV ${APP_ENV}
+ENV ROOT_APP_PATH ${ROOT_APP_PATH}
 ENV SIGOMS_USERS_LOGIN ${SIGOMS_USERS_LOGIN}
 
 # ----------------------------------------------
 # -----------[Diretório de trabalho]------------
 # ----------------------------------------------
 
-WORKDIR /app
+WORKDIR ${ROOT_APP_PATH}
+
+# ----------------------------------------------
+# ------[Criação de variáveis de ambiente]------
+# ----------------------------------------------
+
+RUN ./docker/environment.sh \
+    ${APP_ENV} \
+    ${ROOT_APP_PATH} \
+    ${SIGOMS_USERS_LOGIN}
 
 # ----------------------------------------------
 # --------[Instalação das dependências]---------
 # ----------------------------------------------
 
-COPY . /app
+COPY . ${ROOT_APP_PATH}
 
 RUN npm install --silent
 RUN npm install react-scripts@3.3.1 -g --silent
 RUN npm run build
+
+# ----------------------------------------------
+# -----------[Execução da aplicação]------------
+# ----------------------------------------------
+
+CMD ["npm", "start"]
 
 # ----------------------------------------------
 # -------------[Ambiente produtivo]-------------
