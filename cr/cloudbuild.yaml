@@ -6,6 +6,8 @@ steps:
       - "-t"
       - "gcr.io/$PROJECT_ID/sigomf:$SHORT_SHA"
       - "--build-arg"
+      - "APP_ENV=${_APP_ENV}"
+      - "--build-arg"
       - "SIGOMS_USERS_LOGIN=${_SIGOMS_USERS_LOGIN}"
       - "."
 
