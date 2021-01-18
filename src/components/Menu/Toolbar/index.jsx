@@ -5,7 +5,7 @@ import { AppBar, Toolbar, IconButton, Typography, InputBase } from '@material-ui
 
 import { useStyles } from "./assets/styles"
 
-export default function PrimarySearchAppBar() {
+export default function SearchAppBar({updateInput}) {
   const classes = useStyles()
 
   return (
@@ -27,6 +27,7 @@ export default function PrimarySearchAppBar() {
         <div className={classes.search}>
           <SearchIcon className={classes.searchIcon} />
           <InputBase
+            onChange={updateInput}
             placeholder="Search…"
             classes={{
               root: classes.inputRoot,

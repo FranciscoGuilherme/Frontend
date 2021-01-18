@@ -6,44 +6,59 @@ import { images } from "./assets/images"
 import { useStyles } from "./assets/styles"
 
 import Toolbar from "~/components/Menu/Toolbar"
+import ModulesService from "~/services/ModulesService"
 
-const axios = require('axios').default
-
-export default function Album() {
+export default function Album(props) {
   const classes = useStyles()
-  const [modules, setModules] = useState([])
+  const [modulesList, setModulesList] = useState([])
+  const [modulesListDefault, setModulesListDefault] = useState([])
 
   useEffect(() => {
-    let isSubscribed = true
-    axios.get(process.env.REACT_APP_GET_MODULES)
+    ModulesService.get()
       .then((response) => {
-        if (isSubscribed) {
-          setModules(response.data.modules)
-        }
+        console.log(response)
+        setModulesList(response)
+        setModulesListDefault(response)
       })
       .catch((error) => {
         console.log(error)
       })
-    
-    return () => isSubscribed = false
-  })
+  }, [])
+
+  const updateInput = async (event) => {
+    const input = event.target.value
+    const filtered = modulesListDefault.filter(module => {
+      return module.name
+        .toLowerCase()
+        .includes(
+          input.toLowerCase()
+        )
+    })
+
+    setModulesList(filtered)
+  }
 
   return (
     <>
-      <Toolbar />
+      <Toolbar updateInput={updateInput} />
 
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid
           container
           spacing={4}
         >
-          {modules.map((module, index) => (
+          {modulesList.map((module, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
               <CardActionArea>
-                <Card className={classes.card}>
+                <Card
+                  className={classes.card}
+                  onClick={() => {
+                    props.history.push("/menu")
+                  }}
+                >
                   <CardMedia
                     className={classes.cardMedia}
-                    image={images[module.image]}
+                    image={images[module.imageName]}
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom className={classes.cardTitle}>
