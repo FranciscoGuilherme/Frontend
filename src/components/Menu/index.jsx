@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Button, Typography, Container } from '@material-ui/core'
-import { Card, CardMedia, CardActions, CardContent } from '@material-ui/core'
-
-import Footer from "~/components/Footer"
-import Toolbar from "~/components/Menu/Toolbar"
+import { Grid, Typography, Container } from '@material-ui/core'
+import { Card, CardMedia, CardContent, CardActionArea } from '@material-ui/core'
 
 import { images } from "./assets/images"
 import { useStyles } from "./assets/styles"
+
+import Toolbar from "~/components/Menu/Toolbar"
 
 const axios = require('axios').default
 
@@ -15,13 +14,18 @@ export default function Album() {
   const [modules, setModules] = useState([])
 
   useEffect(() => {
+    let isSubscribed = true
     axios.get(process.env.REACT_APP_GET_MODULES)
       .then((response) => {
-        setModules(response.modules)
+        if (isSubscribed) {
+          setModules(response.data.modules)
+        }
       })
       .catch((error) => {
         console.log(error)
       })
+    
+    return () => isSubscribed = false
   })
 
   return (
@@ -35,31 +39,23 @@ export default function Album() {
         >
           {modules.map((module, index) => (
             <Grid item key={index} xs={12} sm={6} md={4}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={images[module.image]}
-                />
-                <CardContent className={classes.cardContent}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    { module.name }
-                  </Typography>
-                  <Typography>
-                    { module.description }
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Acessar
-                  </Button>
-                </CardActions>
-              </Card>
+              <CardActionArea>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image={images[module.image]}
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom className={classes.cardTitle}>
+                      { module.name }
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </CardActionArea>
             </Grid>
           ))}
         </Grid>
       </Container>
-
-      <Footer />
     </>
   )
 }
