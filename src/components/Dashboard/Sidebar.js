@@ -16,7 +16,7 @@ import MenuIcon from "@material-ui/icons/Menu"
 import IconButton from "@material-ui/core/IconButton"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import NotificationsIcon from "@material-ui/icons/Notifications"
-import { mainListItems, secondaryListItems } from "~/components/Dashboard/MenuItens"
+import { mainListItems, secondaryListItems } from "~/components/Dashboard/SidebarItens"
 
 const drawerWidth = 240
 const useStyles = makeStyles((theme) => ({

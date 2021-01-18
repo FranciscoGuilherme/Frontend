@@ -41,7 +41,7 @@ export default function Login(props) {
                 if (response.data.hasOwnProperty('token')) {
                   localStorage.setItem('token', response.data.token)
 
-                  props.history.push("/dashboard")
+                  props.history.push("/menu")
                 }
               })
               .catch((error) => {

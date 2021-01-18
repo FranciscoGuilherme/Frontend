@@ -5,6 +5,7 @@ import BeatLoader from "react-spinners/BeatLoader"
 import LoadingOverlay from "react-loading-overlay"
 import { Container } from "@material-ui/core"
 
+import Menu from "~/components/Menu"
 import Login from "~/components/Login"
 import Register from "~/components/Register"
 import Dashboard from "~/components/Dashboard"
@@ -41,6 +42,7 @@ export default function App() {
             <Route exact path="/register" component={Register} />
         </Container>
 
+        <ProtectedRoute exact path="/menu" component={Menu} />
         <ProtectedRoute exact path="/dashboard" component={Dashboard} />
       </LoaderContext.Provider>
     </StyledLoader>

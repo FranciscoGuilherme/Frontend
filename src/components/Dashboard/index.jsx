@@ -7,7 +7,7 @@ import {
   CssBaseline
 } from '@material-ui/core'
 
-import Menu from "~/components/Dashboard/Menu"
+import Menu from "~/components/Dashboard/Sidebar"
 
 const useStyles = makeStyles((theme) => ({
   root: {
