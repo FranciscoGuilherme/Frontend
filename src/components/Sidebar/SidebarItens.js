@@ -30,6 +30,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Usuarios" />
     </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <ExitToAppIcon />
+      </ListItemIcon>
+      <ListItemText primary="Sair" />
+    </ListItem>
   </div>
 )
 

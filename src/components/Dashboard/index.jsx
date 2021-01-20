@@ -1,45 +1,48 @@
 import React from 'react'
+import { Grid, Card, Avatar, Container, CardHeader, CardActionArea } from '@material-ui/core'
+import People from "@material-ui/icons/People"
 
-import {
-  Grid,
-  Container,
-  makeStyles,
-  CssBaseline
-} from '@material-ui/core'
+import Vendas from './Vendas'
+import Pedidos from './Pedidos'
 
-import Menu from "~/components/Dashboard/Sidebar"
+import { useStyles } from "./assets/style"
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  }
-}))
+const modulesList = [1, 2, 3]
 
-export default function Dashboard() {
+const Dashboard = () => {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <Menu />
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
+    <Grid container>
+      {modulesList.map((module, index) => (
+        <Grid item md={6} xl={4} xs={12}>
+          <Container className={classes.cardGrid} >
+            <CardActionArea>
+              <Card>
+                <CardHeader
+                  title="Usuários"
+                  subheader="Alguma descrição"
+                  avatar={
+                    <Avatar aria-label="recipe" className={classes.avatar}>
+                      <People />
+                    </Avatar>
+                  }
+                />
+              </Card>
+            </CardActionArea>
+          </Container>
+        </Grid>
+      ))}
 
-          </Grid>
-        </Container>
-      </main>
-    </div>
+      <Grid md={12} xs={12}>
+        <Vendas />
+      </Grid>
+
+      <Grid md={12} xs={12}>
+        <Pedidos />
+      </Grid>
+    </Grid>
   );
-}
+};
+
+export default Dashboard;

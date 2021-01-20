@@ -70,7 +70,7 @@ export default function Album(props) {
                     </Typography>
                   </CardContent>
                 </Card>
-                </CardActionArea>
+              </CardActionArea>
             </Grid>
           ))}
         </Grid>
