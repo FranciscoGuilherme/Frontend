@@ -1,16 +1,13 @@
-import React, {useState} from "react"
-import styled from "styled-components"
+import React from "react"
 import { Route } from "react-router-dom"
-import BeatLoader from "react-spinners/BeatLoader"
-import LoadingOverlay from "react-loading-overlay"
-import { Container } from "@material-ui/core"
+import { Container, Backdrop, CircularProgress, makeStyles } from "@material-ui/core"
 
 import Menu from "~/components/Menu"
 import Login from "~/components/Login"
 import Register from "~/components/Register"
 import Dashboard from "~/components/Dashboard"
+import Compliance from "~/components/Compliance"
 import ProtectedRoute from "~/components/ProtectedRoute"
-
 import LoginContext from "~/contexts/LoginContext"
 import LoaderContext from "~/contexts/LoaderContext"
 
@@ -18,23 +15,24 @@ import { LoginModel } from "~/models/LoginModel"
 
 import "./App.css"
 
-const StyledLoader = styled(LoadingOverlay)`
-  .MyLoader_overlay {
-    position: fixed;
-    background: rgb(249 249 249 / 0.5);
+const useStyles = makeStyles((theme) => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 2,
+    color: '#fff'
   }
-`
+}))
 
 export default function App() {
-  const [loadSpinner, setLoadSpinner] = useState(false)
+  const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
 
   return (
-    <StyledLoader
-      active={loadSpinner}
-      spinner={<BeatLoader />}
-      classNamePrefix='MyLoader_'
-    >
-      <LoaderContext.Provider value={(bool) => {setLoadSpinner(bool)}}>
+    <>
+      <Backdrop className={classes.backdrop} open={open}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
+      <LoaderContext.Provider value={(bool) => {setOpen(bool)}}>
         <Container component="main" maxWidth="sm">
             <LoginContext.Provider value={{ password: LoginModel.validatePassword }}>
               <Route exact path="/" component={Login} />
@@ -44,8 +42,9 @@ export default function App() {
         </Container>
 
         <ProtectedRoute exact path="/menu" component={Menu} />
-        <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+        <ProtectedRoute exact path="/dashboard" component={Dashboard} name="Dashboard" />
+        <ProtectedRoute exact path="/compliance" component={Compliance} name="Compliance" />
       </LoaderContext.Provider>
-    </StyledLoader>
+    </>
   )
 }

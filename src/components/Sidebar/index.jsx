@@ -1,45 +1,41 @@
-import React from 'react'
+import React from "react"
+import clsx from "clsx"
 
 import {
-  Grid,
-  Container,
-  makeStyles,
-  CssBaseline
-} from '@material-ui/core'
+  List,
+  Drawer,
+  Divider
+} from "@material-ui/core"
 
-import Menu from "~/components/Sidebar/Sidebar"
+import IconButton from "@material-ui/core/IconButton"
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
+import { mainListItems } from "~/components/Sidebar/SidebarItens"
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  }
-}))
+import { useStyles } from "./assets/style"
 
-export default function Sidebar({component: Component, ...props}) {
+export default function Sidebar() {
   const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
+  const handleDrawerOpen = () => { setOpen(true) }
+  const handleDrawerClose = () => { setOpen(false) }
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <Menu />
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Component {...props} />
-          </Grid>
-        </Container>
-      </main>
-    </div>
-  );
+    <Drawer
+      onMouseMoveCapture={handleDrawerOpen}
+      onMouseOut={handleDrawerClose}
+      variant="permanent"
+      classes={{
+        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+      }}
+      open={open}
+    >
+      <div className={classes.toolbarIcon}>
+        <IconButton onClick={handleDrawerClose}>
+          <ChevronLeftIcon />
+        </IconButton>
+      </div>
+      <Divider />
+      <List>{mainListItems}</List>
+    </Drawer>
+  )
 }
