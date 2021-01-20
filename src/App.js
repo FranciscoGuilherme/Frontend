@@ -20,6 +20,7 @@ import "./App.css"
 
 const StyledLoader = styled(LoadingOverlay)`
   .MyLoader_overlay {
+    position: fixed;
     background: rgb(249 249 249 / 0.5);
   }
 `

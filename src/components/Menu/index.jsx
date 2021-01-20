@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Grid, Typography, Container } from '@material-ui/core'
 import { Card, CardMedia, CardContent, CardActionArea } from '@material-ui/core'
 
@@ -6,21 +6,25 @@ import { images } from "./assets/images"
 import { useStyles } from "./assets/styles"
 
 import Toolbar from "~/components/Menu/Toolbar"
+import LoaderContext from "~/contexts/LoaderContext"
 import ModulesService from "~/services/ModulesService"
 
 export default function Album(props) {
   const classes = useStyles()
+  const loader = useContext(LoaderContext)
   const [modulesList, setModulesList] = useState([])
   const [modulesListDefault, setModulesListDefault] = useState([])
 
   useEffect(() => {
-    ModulesService.get()
+    loader(true)
+    ModulesService.get(loader)
       .then((response) => {
-        console.log(response)
+        loader(false)
         setModulesList(response)
         setModulesListDefault(response)
       })
       .catch((error) => {
+        loader(false)
         console.log(error)
       })
   }, [])
@@ -53,7 +57,7 @@ export default function Album(props) {
                 <Card
                   className={classes.card}
                   onClick={() => {
-                    props.history.push("/menu")
+                    props.history.push(`${module.route}`)
                   }}
                 >
                   <CardMedia

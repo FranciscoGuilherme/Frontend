@@ -2,11 +2,11 @@ import React, { useState, useContext } from "react"
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
 import { Grid, Button, Typography, TextField, makeStyles } from "@material-ui/core"
 
-import auth from "~/auth";
+import auth from "~/auth"
 import useErrors from "~/hooks/useErrors"
 import { Icon } from "~/components/GlobalStyle"
-import LoginContext from "~/contexts/LoginContext";
-import LoaderContext from "~/contexts/LoaderContext";
+import LoginContext from "~/contexts/LoginContext"
+import LoaderContext from "~/contexts/LoaderContext"
 
 const useStyles = makeStyles({
   button: {
