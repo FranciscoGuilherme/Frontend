@@ -1,8 +1,8 @@
 const axios = require('axios').default
 
-const getModules = async () => {
+const getLastOrders = async () => {
   return new Promise((resolve, reject) => {
-    axios.get(process.env.REACT_APP_MSUSERS_MODULES)
+    axios.get(process.env.REACT_APP_MSGPI_LAST_ORDERS)
       .then((response) => {
         resolve(response.data)
       })
@@ -12,8 +12,8 @@ const getModules = async () => {
   })
 }
 
-const ModulesService = {
-  get: getModules
+const OrdersService = {
+  get: getLastOrders
 }
 
-export default ModulesService
+export default OrdersService

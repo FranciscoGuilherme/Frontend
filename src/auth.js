@@ -3,7 +3,7 @@ const axios = require('axios').default
 class Auth {
   async login({email, password}) {
     return new Promise((resolve, reject) => {
-      axios.post(process.env.REACT_APP_SIGOMS_USERS_LOGIN, {
+      axios.post(process.env.REACT_APP_MSUSERS_LOGIN, {
         username: email,
         password: password
       })

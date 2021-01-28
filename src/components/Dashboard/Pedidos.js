@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import moment from 'moment'
+import React from 'react'
 import PropTypes from 'prop-types'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import {
@@ -14,14 +13,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
-  Tooltip,
   makeStyles
 } from '@material-ui/core';
 
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
-
-import { data } from "./assets/data"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,13 +29,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Pedidos = ({ className, ...rest }) => {
+const Pedidos = ({ordersList}) => {
   const classes = useStyles();
-  const [orders] = useState(data);
 
   return (
     <div className={classes.root}>
-      <Card {...rest}>
+      <Card>
         <CardHeader title="Ordens de compra" />
         <Divider />
         <PerfectScrollbar>
@@ -51,19 +45,13 @@ const Pedidos = ({ className, ...rest }) => {
                   <TableCell>Número</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Usuário</TableCell>
-                  <TableCell sortDirection="desc">
-                    <Tooltip enterDelay={300} title="Sort">
-                      <TableSortLabel active direction="asc">
-                        Data
-                      </TableSortLabel>
-                    </Tooltip>
-                  </TableCell>
+                  <TableCell>Data</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
-                {orders.map((order) => (
-                  <TableRow hover key={order.id}>
+                {ordersList.map((order) => (
+                  <TableRow hover key={order.serial}>
                     <TableCell>{order.ref}</TableCell>
                     <TableCell>
                       <Chip
@@ -72,9 +60,9 @@ const Pedidos = ({ className, ...rest }) => {
                         size="small"
                       />
                     </TableCell>
-                    <TableCell>{order.customer.name}</TableCell>
+                    <TableCell>{order.client}</TableCell>
                     <TableCell>
-                      {moment(order.createdAt).format('DD/MM/YYYY')}
+                      {order.date}
                     </TableCell>
                   </TableRow>
                 ))}
