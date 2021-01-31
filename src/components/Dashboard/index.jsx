@@ -9,6 +9,7 @@ import { useStyles } from "./assets/style"
 import OrdersService from '~/services/OrdersService'
 
 const modulesList = [1, 2, 3]
+const client = new WebSocket(process.env.REACT_APP_MSGPI_WEBSOCKET)
 
 const Dashboard = () => {
   const classes = useStyles()
@@ -22,6 +23,9 @@ const Dashboard = () => {
       .catch((error) => {
         console.log(error)
       })
+
+    client.onopen = () => { console.log('WebSocket Client Connected') }
+    client.onmessage = (message) => { console.log(message) }
   }, [])
 
   return (
