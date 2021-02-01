@@ -42,7 +42,7 @@ const Pedidos = ({title, rows, columns}) => {
   }
 
   const orderStatus = (value) => {
-    return (value === "pending")
+    return (value === "pending" || value === "stopped")
       ? "secondary"
       : "primary"
   }

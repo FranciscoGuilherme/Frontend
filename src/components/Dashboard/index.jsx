@@ -13,6 +13,7 @@ import People from "@material-ui/icons/People"
 import Vendas from './Vendas'
 import CardListing from '~/components/CardListing'
 import OrdersService from '~/services/OrdersService'
+import ProcessService from '~/services/ProcessService'
 import { ordersColumns, getOrdersRows } from '~/components/Dashboard/orders'
 import { processColumns, getProcessRows } from '~/components/Dashboard/process'
 
@@ -25,6 +26,14 @@ const Dashboard = () => {
   const [processRows, setProcessRows] = useState([])
 
   useEffect(() => {
+    ProcessService.get()
+      .then((response) => {
+        setProcessRows(getProcessRows(response[0]))
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
     OrdersService.get()
       .then((response) => {
         setOrdersRows(getOrdersRows(response[0]))
