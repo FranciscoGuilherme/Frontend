@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Grid, Typography, Container } from '@material-ui/core'
-import { Card, CardMedia, CardContent, CardActionArea } from '@material-ui/core'
+import {
+  Grid,
+  Card,
+  CardMedia,
+  Container,
+  Typography,
+  CardContent,
+  CardActionArea
+} from '@material-ui/core'
 
 import { images } from "./assets/images"
 import { useStyles } from "./assets/styles"

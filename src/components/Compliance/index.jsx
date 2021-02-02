@@ -4,6 +4,7 @@ import {
   Chip,
   Card,
   Paper,
+  Button,
   MenuItem,
   Accordion,
   IconButton,
@@ -23,6 +24,8 @@ import BuildIcon from '@material-ui/icons/Build'
 import DeleteIcon from '@material-ui/icons/Delete'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
+import CustomModal from "~/components/Modal"
 
 const data = [
   {
@@ -63,10 +66,13 @@ const data = [
 
 export default function Compliance() {
   const classes = useStyles()
+  const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null)
   const [expanded, setExpanded] = useState(false)
-  const [compliancesList, setCompliancesList] = useState(data)
+  const [compliancesList, setCompliancesList] = useState([])
 
+  const handleModalOpen = () => { setOpen(true) }
+  const handleModalClose = () => { setOpen(false) }
   const handleClose = (event) => { setAnchorEl(null) }
   const handleClick = (event) => { setAnchorEl(event.currentTarget) }
   const handleChange = (panel) => (event, isExpanded) => {
@@ -88,6 +94,27 @@ export default function Compliance() {
           </Grid>
         </Paper>
         <CardContent>
+          {compliancesList.length === 0 && (
+            <Grid
+              container
+              spacing={0}
+              direction="column"
+              alignItems="center"
+              justify="center"
+              style={{ minHeight: '20vh' }}
+            >
+              <Button
+                type="button"
+                color="primary"
+                variant="contained"
+                onClick={handleModalOpen}
+              >
+                Cadastrar primeiro compliance
+              </Button>
+              
+              <CustomModal open={open} handleModalClose={handleModalClose} />
+            </Grid>
+          )}
           {compliancesList.map((compliance, index) => (
             <Accordion key={index}
               expanded={expanded === compliance}
