@@ -1,21 +1,20 @@
-import React from "react"
+import React, { useState } from "react"
 import clsx from "clsx"
 
 import {
   List,
   Drawer,
-  Divider
+  Divider,
+  IconButton
 } from "@material-ui/core"
-
-import IconButton from "@material-ui/core/IconButton"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
-import { mainListItems } from "~/components/Sidebar/SidebarItens"
 
 import { useStyles } from "./assets/style"
+import { mainListItems } from "~/components/Sidebar/SidebarItens"
 
 export default function Sidebar() {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const handleDrawerOpen = () => { setOpen(true) }
   const handleDrawerClose = () => { setOpen(false) }
 

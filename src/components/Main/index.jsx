@@ -32,7 +32,7 @@ export default function Main({component: Component, name, ...props}) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <Toolbar name={name} />
+      <Toolbar name={name} {...props} />
       <Sidebar />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

@@ -1,23 +1,33 @@
 import React from 'react'
-import HomeIcon from '@material-ui/icons/Home'
+import ExitToApp from '@material-ui/icons/ExitToApp'
 import SearchIcon from '@material-ui/icons/Search'
-import { AppBar, Toolbar, IconButton, Typography, InputBase } from '@material-ui/core'
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase
+} from '@material-ui/core'
 
 import { useStyles } from "./assets/styles"
 
-export default function SearchAppBar({updateInput}) {
+export default function SearchAppBar({ updateInput, ...props }) {
   const classes = useStyles()
+  const exitApp = () => {
+    props.history.push("/")
+  }
 
   return (
     <AppBar position="static">
-      <Toolbar>
+      <Toolbar className={classes.toolbar}>
         <IconButton
           edge="start"
           className={classes.menuButton}
           color="inherit"
           aria-label="open drawer"
+          onClick={exitApp}
         >
-          <HomeIcon />
+          <ExitToApp />
         </IconButton>
 
         <Typography className={classes.title} variant="h6" noWrap>

@@ -9,24 +9,35 @@ import Toolbar from "~/components/Menu/Toolbar"
 import LoaderContext from "~/contexts/LoaderContext"
 import ModulesService from "~/services/ModulesService"
 
-export default function Album(props) {
+export default function Menu(props) {
   const classes = useStyles()
   const loader = useContext(LoaderContext)
   const [modulesList, setModulesList] = useState([])
   const [modulesListDefault, setModulesListDefault] = useState([])
 
   useEffect(() => {
-    loader(true)
-    ModulesService.get(loader)
-      .then((response) => {
-        loader(false)
-        setModulesList(response)
-        setModulesListDefault(response)
-      })
-      .catch((error) => {
-        loader(false)
-        console.log(error)
-      })
+    const storageModulesList = localStorage.getItem('modulesList')
+
+    if (storageModulesList !== null) {
+      const storageModulesListParsed = JSON.parse(storageModulesList)
+      setModulesList(storageModulesListParsed)
+      setModulesListDefault(storageModulesListParsed)
+    }
+
+    if (storageModulesList == null) {
+      loader(true)
+      ModulesService.get(loader)
+        .then((response) => {
+          loader(false)
+          setModulesList(response)
+          setModulesListDefault(response)
+          localStorage.setItem('modulesList', JSON.stringify(response))
+        })
+        .catch((error) => {
+          loader(false)
+          console.log(error)
+        })
+    }
   }, [])
 
   const updateInput = async (event) => {
@@ -44,7 +55,7 @@ export default function Album(props) {
 
   return (
     <>
-      <Toolbar updateInput={updateInput} />
+      <Toolbar updateInput={updateInput} {...props} />
 
       <Container className={classes.cardGrid} maxWidth="md">
         <Grid

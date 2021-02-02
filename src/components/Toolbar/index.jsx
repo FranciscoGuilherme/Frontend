@@ -8,16 +8,18 @@ import {
   Typography
 } from "@material-ui/core"
 
-import MenuIcon from "@material-ui/icons/Menu"
+import ArrowBack from "@material-ui/icons/ArrowBack"
 import IconButton from "@material-ui/core/IconButton"
 import NotificationsIcon from "@material-ui/icons/Notifications"
 
 import { useStyles } from "./assets/style"
 
-export default function Menu({ name }) {
+export default function Menu({ name, ...props }) {
+  const open = false
   const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
-  const handleDrawerOpen = () => { setOpen(true) }
+  const handleDrawerOpen = () => {
+    props.history.push("/menu")
+  }
 
   return (
     <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -29,7 +31,7 @@ export default function Menu({ name }) {
           onClick={handleDrawerOpen}
           className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
         >
-          <MenuIcon />
+          <ArrowBack />
         </IconButton>
         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
           { name }
