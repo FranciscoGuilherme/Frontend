@@ -4,6 +4,7 @@ import {
   Card,
   Paper,
   Divider,
+  Checkbox,
   makeStyles,
   CardHeader,
   CardContent,
@@ -30,10 +31,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Pedidos = ({title, rows, columns}) => {
+const CardListing = ({title, rows, columns, ...props}) => {
   const classes = useStyles()
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [rowsPerPage, setRowsPerPage] = useState(2)
+  let checked = false
+
+  const changeState = (event) => {
+    checked = event.target.checked = !checked
+    checked = !checked
+  }
 
   const handleChangePage = (event, page) => { setPage(page) }
   const handleChangeRowsPerPage = (event) => {
@@ -73,8 +80,15 @@ const Pedidos = ({title, rows, columns}) => {
                   {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                     return (
                       <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                        {columns.map((column) => {
+                        {columns.map((column, index) => {
                           const value = row[column.id]
+                          if (column.id === 'check') {
+                            return (
+                              <TableCell align={column.align}>
+                                <Checkbox id={index} onClick={changeState} />
+                              </TableCell>
+                            )
+                          }
                           if (column.id === 'status') {
                             return (
                               <TableCell key={column.id} align={column.align}>
@@ -100,7 +114,7 @@ const Pedidos = ({title, rows, columns}) => {
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 50]}
+              rowsPerPageOptions={[2, 25, 10, 50]}
               component="div"
               count={rows.length}
               rowsPerPage={rowsPerPage}
@@ -115,4 +129,4 @@ const Pedidos = ({title, rows, columns}) => {
   )
 }
 
-export default Pedidos
+export default CardListing

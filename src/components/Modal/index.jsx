@@ -2,10 +2,7 @@ import React from 'react'
 import {
   Card,
   Modal,
-  Button,
   Backdrop,
-  TextField,
-  Typography,
   makeStyles,
   CardMedia,
   CardContent,
@@ -18,21 +15,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  modalPaper: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(2, 4, 3),
-  },
-  button: {
-    float: "right",
-    marginBottom: "30px"
-  },
-  title: {
-    marginBottom: "10px"
   }
 }))
 
-export default function CustomModal({ open, handleModalClose }) {
+export default function CustomModal({component: Component, ...props}) {
   const classes = useStyles()
 
   return (
@@ -41,15 +27,15 @@ export default function CustomModal({ open, handleModalClose }) {
       disableEnforceFocus
       disableAutoFocus
       className={classes.modal}
-      open={open}
-      onClose={handleModalClose}
+      open={props.open}
+      onClose={props.handleModalClose}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
-      <Card in={open}>
+      <Card in={props.open}>
         <CardMedia
           component="img"
           alt="Business"
@@ -58,51 +44,7 @@ export default function CustomModal({ open, handleModalClose }) {
           title="Business"
         />
         <CardContent>
-          <form className={classes.modalPaper}
-            onSubmit={event => {
-              event.preventDefault()
-            }}
-          >
-            <Typography
-              component="h1"
-              variant="h5"
-              align="center"
-              className={classes.title}
-            >
-              Cadastrar novo complicance
-            </Typography>
-
-            <TextField
-              id="complianceName"
-              name="complianceName"
-              label="Compliance Name"
-              type="text"
-              required
-              variant="outlined"
-              margin="normal"
-              fullWidth
-            />
-
-            <TextField
-              id="complianceDesc"
-              name="complianceDesc"
-              label="Compliance Description"
-              type="text"
-              required
-              variant="outlined"
-              margin="normal"
-              fullWidth
-            />
-
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              className={classes.button}
-            >
-              Login
-            </Button>
-          </form>
+          <Component />
         </CardContent>
       </Card>
     </Modal>

@@ -9,10 +9,10 @@ export const getOrdersRows = (dataList) => {
   const rows = []
   dataList.map((data) => {
     return rows.push({
-    numero: data.serial,
-    status: data.status,
-    usuario: data.client,
-    data: data.date
+      numero: data.serial,
+      status: data.status,
+      usuario: data.client,
+      data: data.date
     })
  })
 

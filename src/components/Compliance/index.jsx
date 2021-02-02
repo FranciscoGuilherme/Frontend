@@ -26,6 +26,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import CustomModal from "~/components/Modal"
+import StandardsForm from "~/components/StandardsForm"
+import CompliancesForm from "~/components/CompliancesForm"
 
 const data = [
   {
@@ -33,14 +35,7 @@ const data = [
       name: "C1",
       desc: "Descarte de materiais"
     },
-    standardsList: [
-      {
-        code: "CODE1",
-        name: "Name",
-        desc: "Alguma descrição",
-        status: true
-      }
-    ]
+    standardsList: []
   },
   {
     data: {
@@ -69,7 +64,7 @@ export default function Compliance() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null)
   const [expanded, setExpanded] = useState(false)
-  const [compliancesList, setCompliancesList] = useState([])
+  const [compliancesList, setCompliancesList] = useState(data)
 
   const handleModalOpen = () => { setOpen(true) }
   const handleModalClose = () => { setOpen(false) }
@@ -111,8 +106,12 @@ export default function Compliance() {
               >
                 Cadastrar primeiro compliance
               </Button>
-              
-              <CustomModal open={open} handleModalClose={handleModalClose} />
+
+              <CustomModal
+                open={open}
+                component={CompliancesForm}
+                handleModalClose={handleModalClose}
+              />
             </Grid>
           )}
           {compliancesList.map((compliance, index) => (
@@ -154,50 +153,75 @@ export default function Compliance() {
 
               <AccordionDetails className={classes.accordionBody}>
                 <div key={index} className={classes.rootSecondary}>
+                  {compliance.standardsList.length === 0 && (
+                    <Grid
+                      container
+                      spacing={0}
+                      direction="column"
+                      alignItems="center"
+                      justify="center"
+                      style={{ minHeight: '20vh' }}
+                    >
+                      <Button
+                        type="button"
+                        color="primary"
+                        variant="contained"
+                        onClick={handleModalOpen}
+                      >
+                        Cadastrar primeira norma
+                      </Button>
+
+                      <CustomModal
+                        open={open}
+                        component={StandardsForm}
+                        handleModalClose={handleModalClose}
+                      />
+                    </Grid>
+                  )}
                   {compliance.standardsList.map((standard, index) => (
-                      <Paper className={classes.paper}>
-                        <Grid container wrap="nowrap" spacing={2}>
-                          <Grid item xs zeroMinWidth>
-                          <CardHeader
-                            avatar={
-                              <Chip
-                                color={(standard.status === true) ? "primary" : "secondary" }
-                                label={standard.code}
-                                size="small"
-                              />
-                            }
-                            action={
-                              <FormControlLabel
-                                aria-label="Acknowledge"
-                                onClick={(event) => event.stopPropagation()}
-                                onFocus={(event) => event.stopPropagation()}
-                                control={
-                                  <>
-                                    <IconButton onClick={handleClick}>
-                                      <MoreVertIcon />
-                                    </IconButton>
-                                    <CustomMenu
-                                      anchorEl={anchorEl}
-                                      open={Boolean(anchorEl)}
-                                      onClose={handleClose}
-                                    >
-                                      <MenuItem>
-                                        <ListItemIcon>
-                                          <DeleteIcon fontSize="small" />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Excluir" />
-                                      </MenuItem>
-                                    </CustomMenu>
-                                  </>
-                                }
-                              />
-                            }
-                            title={standard.name}
-                            subheader={standard.desc}
-                          />
-                          </Grid>
+                    <Paper className={classes.paper}>
+                      <Grid container wrap="nowrap" spacing={2}>
+                        <Grid item xs zeroMinWidth>
+                        <CardHeader
+                          avatar={
+                            <Chip
+                              color={(standard.status === true) ? "primary" : "secondary" }
+                              label={standard.code}
+                              size="small"
+                            />
+                          }
+                          action={
+                            <FormControlLabel
+                              aria-label="Acknowledge"
+                              onClick={(event) => event.stopPropagation()}
+                              onFocus={(event) => event.stopPropagation()}
+                              control={
+                                <>
+                                  <IconButton onClick={handleClick}>
+                                    <MoreVertIcon />
+                                  </IconButton>
+                                  <CustomMenu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleClose}
+                                  >
+                                    <MenuItem>
+                                      <ListItemIcon>
+                                        <DeleteIcon fontSize="small" />
+                                      </ListItemIcon>
+                                      <ListItemText primary="Excluir" />
+                                    </MenuItem>
+                                  </CustomMenu>
+                                </>
+                              }
+                            />
+                          }
+                          title={standard.name}
+                          subheader={standard.desc}
+                        />
                         </Grid>
-                      </Paper>
+                      </Grid>
+                    </Paper>
                   ))}
                 </div>
               </AccordionDetails>

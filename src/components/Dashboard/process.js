@@ -8,9 +8,9 @@ export const getProcessRows = (dataList) => {
   const rows = []
   dataList.map((data) => {
     return rows.push({
-    numero: data.serial,
-    status: data.status,
-    description: data.description,
+      numero: data.serial,
+      status: data.status,
+      description: data.description
     })
   })
 
