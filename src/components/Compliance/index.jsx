@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Fab,
   Menu,
@@ -29,6 +29,8 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
+
+import LoaderContext from "~/contexts/LoaderContext"
 
 import CustomModal from "~/components/Modal"
 import StandardsForm from "~/components/StandardsForm"
@@ -125,6 +127,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 export default function Compliance() {
   const classes = useStyles()
+  const loader = useContext(LoaderContext)
   const [length, setLength] = useState(0)
   const [open, setOpen] = useState(false)
   const [openStandard, setOpenStandard] = useState(false)
@@ -186,12 +189,42 @@ export default function Compliance() {
     }
   }
 
+  const complianceListFiltered = (newComplianceList) => {
+    let complianceListFiltered = []
+    newComplianceList.forEach(element => {
+      if (element) {
+        let list = []
+        element.standardsList.forEach(data => {
+          list.push({
+            code: data.code,
+            name: data.name,
+            desc: data.description,
+            status: data.status
+          })
+        })
+
+        complianceListFiltered.push({
+          data: {
+            name: element.name,
+            desc: element.description
+          },
+          standardsList: list
+        })
+      }
+    })
+
+    return {compliances: complianceListFiltered}
+  }
+
   const saveCompliances = () => {
-    CompliancesService.post(newComplianceList)
+    loader(true)
+    CompliancesService.post(complianceListFiltered(newComplianceList))
       .then((response) => {
+        loader(false)
         console.log(response)
       })
       .catch((error) => {
+        loader(false)
         console.log(error)
       })
   }

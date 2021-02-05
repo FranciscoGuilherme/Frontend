@@ -16,10 +16,12 @@ const createCompliances = async (compliances) => {
   return new Promise((resolve, reject) => {
     axios.post(process.env.REACT_APP_MSNORMAS_COMPLIANCES, compliances)
       .then((response) => {
-        resolve(response.data)
+        console.log(response)
+        //resolve(response)
       })
       .catch((error) => {
-        reject(error)
+        console.log("OI")
+        //reject(error)
       })
   })
 }
