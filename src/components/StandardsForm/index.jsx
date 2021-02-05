@@ -1,58 +1,49 @@
 import React, { useState } from 'react'
 import {
-  Paper,
   Button,
   TextField,
   Typography,
-  Checkbox,
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TablePagination,
-  FormControl,
   Grid
 } from '@material-ui/core'
 
 import { useStyles } from "./assets/styles"
 
-import CardListing from '~/components/CardListing'
+import CardListingScrow from '~/components/CardListingScrow'
 import { standardsColumns, getStandardsRows } from '~/components/StandardsForm/standards'
-
-const data = [
-  {
-    code: "CODE2",
-    name: "Name",
-    desc: "Alguma descrição"
-  },
-  {
-    code: "CODE2",
-    name: "Name",
-    desc: "Alguma descrição"
-  }
-]
 
 function createData(code, name, desc) {
   return { code, name, desc };
 }
 
 const rows = [
-  createData('code', 'name', 'desc'),
-  createData('code', 'name', 'desc'),
-  createData('code', 'name', 'desc'),
-  createData('code', 'name', 'desc')
+  createData('code1', 'name', 'desc'),
+  createData('code2', 'name', 'desc'),
+  createData('code3', 'name', 'desc'),
+  createData('code4', 'name', 'desc'),
+  createData('code5', 'name', 'desc'),
+  createData('code6', 'name', 'desc'),
+  createData('code15', 'name', 'desc')
 ];
 
-export default function StandardsForm() {
+export default function StandardsForm({ method, identifier }) {
   const classes= useStyles()
   const [standardsRows, setStandardsRows] = useState(rows)
+  const standards = []
+
+  const getAllOptions = (standard) => {
+    let item = standards.find((element) => element.code === standard.code)
+
+    if (item === undefined) standards.push(standard)
+    if (item !== undefined) standards.splice(standards.indexOf(item), 1)
+
+    console.log(standards)
+  }
 
   return (
     <form className={classes.modalPaper}
       onSubmit={event => {
         event.preventDefault()
+        method.setStandard(identifier, standards)
       }}
     >
       <Typography
@@ -64,7 +55,7 @@ export default function StandardsForm() {
         Cadastrar nova norma
       </Typography>
 
-      <Grid container justify="center" spacing="2">
+      <Grid container justify="center">
         <Grid item xs={8}>
           <TextField
             placeholder="Procurar…"
@@ -88,14 +79,15 @@ export default function StandardsForm() {
       </Grid>
 
       <div className={classes.listing}>
-        <CardListing check
+        <CardListingScrow check
           title="Base externa de normas"
           rows={standardsRows}
           columns={standardsColumns}
+          options={getAllOptions}
         />
       </div>
 
-      <Grid spacing="2">
+      <Grid>
         <Button
           type="submit"
           color="primary"
@@ -112,6 +104,7 @@ export default function StandardsForm() {
           variant="contained"
           size="medium"
           className={classes.button}
+          onClick={method.closeModal}
         >
           Fechar
         </Button>

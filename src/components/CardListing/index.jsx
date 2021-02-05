@@ -4,7 +4,6 @@ import {
   Card,
   Paper,
   Divider,
-  Checkbox,
   makeStyles,
   CardHeader,
   CardContent,
@@ -35,12 +34,6 @@ const CardListing = ({title, rows, columns, ...props}) => {
   const classes = useStyles()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(2)
-  let checked = false
-
-  const changeState = (event) => {
-    checked = event.target.checked = !checked
-    checked = !checked
-  }
 
   const handleChangePage = (event, page) => { setPage(page) }
   const handleChangeRowsPerPage = (event) => {
@@ -82,13 +75,6 @@ const CardListing = ({title, rows, columns, ...props}) => {
                       <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                         {columns.map((column, index) => {
                           const value = row[column.id]
-                          if (column.id === 'check') {
-                            return (
-                              <TableCell align={column.align}>
-                                <Checkbox id={index} onClick={changeState} />
-                              </TableCell>
-                            )
-                          }
                           if (column.id === 'status') {
                             return (
                               <TableCell key={column.id} align={column.align}>

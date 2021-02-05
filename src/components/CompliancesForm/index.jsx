@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   TextField,
@@ -20,8 +20,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function CompliancesForm() {
+export default function CompliancesForm({ method }) {
   const classes= useStyles()
+  const [name, setName] = useState("")
+  const [desc, setDesc] = useState("")
+
+  const sendData = () => {
+    method.setCompliance({
+      name: name,
+      desc: desc
+    })
+  }
 
   return (
     <form className={classes.modalPaper}
@@ -43,10 +52,12 @@ export default function CompliancesForm() {
         name="complianceName"
         label="Compliance Name"
         type="text"
+        value={name}
         required
         variant="outlined"
         margin="normal"
         fullWidth
+        onChange={event => setName(event.target.value)}
       />
 
       <TextField
@@ -54,10 +65,12 @@ export default function CompliancesForm() {
         name="complianceDesc"
         label="Compliance Description"
         type="text"
+        value={desc}
         required
         variant="outlined"
         margin="normal"
         fullWidth
+        onChange={event => setDesc(event.target.value)}
       />
 
       <Button
@@ -65,8 +78,9 @@ export default function CompliancesForm() {
         color="primary"
         variant="contained"
         className={classes.button}
+        onClick={sendData}
       >
-        Login
+        Adicionar
       </Button>
     </form>
   )

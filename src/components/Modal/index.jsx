@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function CustomModal({component: Component, ...props}) {
+export default function CustomModal({component: Component, method, ...props}) {
   const classes = useStyles()
 
   return (
@@ -44,7 +44,7 @@ export default function CustomModal({component: Component, ...props}) {
           title="Business"
         />
         <CardContent>
-          <Component />
+          <Component method={method} identifier={props.identifier} />
         </CardContent>
       </Card>
     </Modal>

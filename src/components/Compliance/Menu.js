@@ -17,6 +17,7 @@ export const CustomMenu = withStyles({
       vertical: 'top',
       horizontal: 'center'
     }}
+    index2={props.index2}
     {...props}
   />
 ))

@@ -23,5 +23,14 @@ export const useStyles = makeStyles((theme) => ({
   },
   accordionBody: {
     background: theme.palette.background.default
+  },
+  menuItemSpace: {
+    marginLeft: "30px"
+  },
+  button: {
+    float: "right",
+    marginTop: "20px",
+    marginLeft: "20px",
+    marginBottom: "20px"
   }
 }))
