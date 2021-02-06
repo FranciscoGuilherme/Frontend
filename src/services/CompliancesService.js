@@ -38,9 +38,9 @@ const updateCompliance = async (compliance) => {
 
 const deleteCompliance = async (compliance) => {
   return new Promise((resolve, reject) => {
-    axios.delete(process.env.REACT_APP_MSNORMAS_COMPLIANCES, compliance)
+    axios.delete(process.env.REACT_APP_MSNORMAS_COMPLIANCES, { data: compliance })
       .then((response) => {
-        resolve(response.data)
+        resolve(response)
       })
       .catch((error) => {
         reject(error)

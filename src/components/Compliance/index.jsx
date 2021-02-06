@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {
   Fab,
-  Menu,
   Grid,
   Chip,
   Card,
   Paper,
   Button,
   Tooltip,
-  MenuItem,
   Accordion,
-  withStyles,
-  IconButton,
   CardHeader,
   CardContent,
-  ListItemIcon,
-  ListItemText,
   AccordionDetails,
   AccordionSummary,
   FormControlLabel
@@ -25,10 +19,7 @@ import { useStyles } from "./assets/style"
 import AddIcon from '@material-ui/icons/Add'
 import SaveIcon from '@material-ui/icons/Save'
 import BuildIcon from '@material-ui/icons/Build'
-import DeleteIcon from '@material-ui/icons/Delete'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew'
 
 import LoaderContext from "~/contexts/LoaderContext"
 
@@ -37,94 +28,6 @@ import StandardsForm from "~/components/StandardsForm"
 import CompliancesForm from "~/components/CompliancesForm"
 import CompliancesService from "~/services/CompliancesService"
 
-
-const data = [
-  {
-    name: "C1",
-    description: "Descarte de materiais",
-    compliance_id: 78,
-    standardsList: [
-      {
-        code: "CC",
-        compliance: 78,
-        description: "TESTE",
-        name: "Name",
-        standard_id: 7,
-        status: true
-      },
-      {
-        code: "CC",
-        compliance: 78,
-        description: "TESTE",
-        name: "Name",
-        standard_id: 3,
-        status: true
-      }
-    ]
-  },
-  {
-    name: "C1",
-    description: "Descarte de materiais",
-    compliance_id: 79,
-    standardsList: [
-      {
-        code: "CC",
-        compliance: 79,
-        description: "TESTE",
-        name: "Name",
-        standard_id: 8,
-        status: true
-      }
-    ]
-  },
-  {
-    name: "C1",
-    description: "Descarte de materiais",
-    compliance_id: 90,
-    standardsList: [
-      {
-        code: "CC",
-        compliance: 90,
-        description: "TESTE",
-        name: "Name",
-        standard_id: 9,
-        status: true
-      }
-    ]
-  }
-]
-
-const StyledMenu = withStyles({
-  paper: {
-    border: '1px solid #d3d4d5',
-  },
-})((props) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
-    {...props}
-  />
-));
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 export default function Compliance() {
   const classes = useStyles()
   const loader = useContext(LoaderContext)
@@ -132,6 +35,7 @@ export default function Compliance() {
   const [compliancesList, setCompliancesList] = useState([])
   const [newComplianceList, setNewComplianceList] = useState([])
   const [updateCompliances, setUpdateCompliances] = useState([])
+  const [deleteCompliances, setDeleteCompliances] = useState([])
 
   const [open, setOpen] = useState(false)
   const [openStandard, setOpenStandard] = useState(false)
@@ -144,12 +48,33 @@ export default function Compliance() {
   function useForceUpdate() {
     return () => setValue(value => value + 1)
   }
-  
-  const [anchorEl, setAnchorEl] = useState(null)
-  const handleClose = (event) => { setAnchorEl(null) }
-  const handleClick = (event) => { setAnchorEl(event.currentTarget) }
+
+  const handleDeleteComplianceClick = (event, index) => {
+    event.stopPropagation()
+
+    if (!newComplianceList[index] && compliancesList[index]) {
+      deleteCompliances.push({
+        compliance: {
+          data: {
+            id: compliancesList[index].compliance_id
+          }
+        }
+      })
+
+      delete compliancesList[index]
+
+      setDeleteCompliances(deleteCompliances)
+    }
+
+    if (newComplianceList[index]) {
+      delete newComplianceList[index]
+      delete compliancesList[index]
+    }
+
+    forceUpdate()
+  }
+
   const handleStatusStandardClick = (event, index, index2) => {
-    console.log(newComplianceList[index], index)
     compliancesList[index].standardsList[index2].status =
         !compliancesList[index].standardsList[index2].status
     if (!newComplianceList[index]) {
@@ -194,11 +119,11 @@ export default function Compliance() {
         standardsList: []
       }
   
-      data.push(newCompliance)
+      compliancesList.push(newCompliance)
       newComplianceList[compliancesList.length - 1] = newCompliance
   
       handleModalClose()
-      setCompliancesList(data)
+      setCompliancesList(compliancesList)
       setNewComplianceList(newComplianceList)
     }
   }
@@ -278,6 +203,7 @@ export default function Compliance() {
       CompliancesService.post(createList)
         .then((response) => {
           loader(false)
+          setNewComplianceList([])
           console.log(response)
         })
         .catch((error) => {
@@ -289,14 +215,30 @@ export default function Compliance() {
     if (updateList.length) {
       updateList.forEach(data => {
         CompliancesService.put(data)
-        .then((response) => {
-          loader(false)
-          console.log(response)
-        })
-        .catch((error) => {
-          loader(false)
-          console.log(error)
-        })
+          .then((response) => {
+            loader(false)
+            setUpdateCompliances([])
+            console.log(response)
+          })
+          .catch((error) => {
+            loader(false)
+            console.log(error)
+          })
+      })
+    }
+
+    if (deleteCompliances.length) {
+      deleteCompliances.forEach(data => {
+        CompliancesService.delete(data)
+          .then((response) => {
+            loader(false)
+            setDeleteCompliances([])
+            console.log(response)
+          })
+          .catch((error) => {
+            loader(false)
+            console.log(error)
+          })
       })
     }
   }
@@ -366,31 +308,17 @@ export default function Compliance() {
                   {compliance.description}
                 </div>
 
-                <FormControlLabel
-                  aria-label="Acknowledge"
-                  onClick={(event) => event.stopPropagation()}
-                  onFocus={(event) => event.stopPropagation()}
-                  control={
-                    <>
-                      <IconButton onClick={handleClick}>
-                        <MoreVertIcon />
-                      </IconButton>
-                      <StyledMenu
-                        id="customized-menu"
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <StyledMenuItem onClick={handleClose}>
-                          <ListItemIcon>
-                            <DeleteIcon fontSize="small" />
-                          </ListItemIcon>
-                          <ListItemText primary="Excluir" />
-                        </StyledMenuItem>
-                      </StyledMenu>
-                    </>
-                  }
-                />
+                <CardContent>
+                  <Button
+                    color="primary"
+                    onClick={(event) => handleDeleteComplianceClick(event, index)}
+                    className={classes.buttonRight}
+                    variant="contained"
+                    size="small"
+                  >
+                    Exlcuir
+                  </Button>
+                </CardContent>
               </AccordionSummary>
 
               <AccordionDetails className={classes.accordionBody}>
