@@ -32,5 +32,11 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: "20px",
     marginLeft: "20px",
     marginBottom: "20px"
+  },
+  buttonSingleSpace: {
+    marginLeft: "20px"
+  },
+  buttonRight: {
+    float: "right"
   }
 }))

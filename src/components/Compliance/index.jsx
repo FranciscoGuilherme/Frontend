@@ -128,24 +128,59 @@ const StyledMenuItem = withStyles((theme) => ({
 export default function Compliance() {
   const classes = useStyles()
   const loader = useContext(LoaderContext)
-  const [length, setLength] = useState(0)
+  const [expanded, setExpanded] = useState(false)
+  const [compliancesList, setCompliancesList] = useState([])
+  const [newComplianceList, setNewComplianceList] = useState([])
+  const [updateCompliances, setUpdateCompliances] = useState([])
+
   const [open, setOpen] = useState(false)
   const [openStandard, setOpenStandard] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [anchorEl2, setAnchorEl2] = useState(null)
-  const [expanded, setExpanded] = useState(false)
-  const [compliancesList, setCompliancesList] = useState(data)
-  const [newComplianceList, setNewComplianceList] = useState([])
-
   const handleModalOpen = () => { setOpen(true) }
   const handleModalClose = () => { setOpen(false) }
   const handleModalOpenStandard = () => { setOpenStandard(true) }
   const handleModalCloseStandard = () => { setOpenStandard(false) }
+  const forceUpdate = useForceUpdate()
+  const [value, setValue] = useState(0)
+  function useForceUpdate() {
+    return () => setValue(value => value + 1)
+  }
   
+  const [anchorEl, setAnchorEl] = useState(null)
   const handleClose = (event) => { setAnchorEl(null) }
   const handleClick = (event) => { setAnchorEl(event.currentTarget) }
-  const handleClose2 = (event) => { setAnchorEl2(null) }
-  const handleClick2 = (event) => { setAnchorEl2(event.currentTarget) }
+  const handleStatusStandardClick = (event, index, index2) => {
+    console.log(newComplianceList[index], index)
+    compliancesList[index].standardsList[index2].status =
+        !compliancesList[index].standardsList[index2].status
+    if (!newComplianceList[index]) {
+      let item = updateCompliances.find(element =>
+        element.id === compliancesList[index].compliance_id &&
+        element.data.standard_id === compliancesList[index].standardsList[index2].standard_id
+      )
+
+      if (!item) {
+        updateCompliances.push({
+          id: compliancesList[index].compliance_id,
+          name: compliancesList[index].name,
+          desc: compliancesList[index].description,
+          data: {
+            id: compliancesList[index].standardsList[index2].standard_id,
+            code: compliancesList[index].standardsList[index2].code,
+            name: compliancesList[index].standardsList[index2].name,
+            desc: compliancesList[index].standardsList[index2].description,
+            status: compliancesList[index].standardsList[index2].status
+          }
+        })
+      }
+
+      if (item) updateCompliances.splice(updateCompliances.indexOf(item), 1)
+
+      setUpdateCompliances(updateCompliances)
+    }
+
+    forceUpdate()
+  }
+
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false)
   }
@@ -184,12 +219,12 @@ export default function Compliance() {
         })
       })
 
-      console.log(newComplianceList)
+      setNewComplianceList(newComplianceList)
       handleModalCloseStandard()
     }
   }
 
-  const complianceListFiltered = (newComplianceList) => {
+  const complianceCreateListFiltered = () => {
     let complianceListFiltered = []
     newComplianceList.forEach(element => {
       if (element) {
@@ -216,27 +251,65 @@ export default function Compliance() {
     return {compliances: complianceListFiltered}
   }
 
+  const complianceUpdateListFiltered = () => {
+    let updateCompliancesFiltered = []
+    updateCompliances.forEach(element => {
+      updateCompliancesFiltered.push({
+        compliance: {
+          data: {
+              id: element.id,
+              name: element.name,
+              desc: element.desc
+          },
+          standardsList: [element.data]
+        }
+      })
+    })
+    return updateCompliancesFiltered
+  }
+
   const saveCompliances = () => {
     loader(true)
-    CompliancesService.post(complianceListFiltered(newComplianceList))
-      .then((response) => {
-        loader(false)
-        console.log(response)
+
+    const createList = complianceCreateListFiltered()
+    const updateList = complianceUpdateListFiltered()
+
+    if (createList.compliances.length) {
+      CompliancesService.post(createList)
+        .then((response) => {
+          loader(false)
+          console.log(response)
+        })
+        .catch((error) => {
+          loader(false)
+          console.log(error)
+        })
+    }
+
+    if (updateList.length) {
+      updateList.forEach(data => {
+        CompliancesService.put(data)
+        .then((response) => {
+          loader(false)
+          console.log(response)
+        })
+        .catch((error) => {
+          loader(false)
+          console.log(error)
+        })
       })
-      .catch((error) => {
-        loader(false)
-        console.log(error)
-      })
+    }
   }
 
   useEffect(() => {
+    loader(true)
     CompliancesService.get()
       .then((response) => {
-        console.log(response)
-        setLength(data.length)
-        //setCompliancesList(response)
+        loader(false)
+        setCompliancesList(response)
       })
       .catch((error) => {
+        loader(false)
         console.log(error)
       })
   }, [])
@@ -364,35 +437,7 @@ export default function Compliance() {
                           action={
                             <FormControlLabel
                               aria-label="Acknowledge"
-                              onClick={(event) => event.stopPropagation()}
-                              onFocus={(event) => event.stopPropagation()}
-                              control={
-                                <>
-                                  <IconButton onClick={handleClick2}>
-                                    <MoreVertIcon />
-                                  </IconButton>
-                                  <StyledMenu
-                                    id="customized-menu"
-                                    anchorEl={anchorEl2}
-                                    open={Boolean(anchorEl2)}
-                                    onClose={handleClose2}
-                                  >
-                                    <StyledMenuItem onClick={handleClose2}>
-                                      <ListItemIcon>
-                                        <PowerSettingsNewIcon fontSize="small" />
-                                      </ListItemIcon>
-                                      <ListItemText primary="On/Off" />
-                                    </StyledMenuItem>
-
-                                    <StyledMenuItem onClick={handleClose2}>
-                                      <ListItemIcon>
-                                        <DeleteIcon fontSize="small" />
-                                      </ListItemIcon>
-                                      <ListItemText primary="Excluir" />
-                                    </StyledMenuItem>
-                                  </StyledMenu>
-                                </>
-                              }
+                              control={<></>}
                             />
                           }
                           title={standard.name}
@@ -400,6 +445,17 @@ export default function Compliance() {
                         />
                         </Grid>
                       </Grid>
+                      <CardContent>
+                        <Button
+                          color={(standard.status === true) ? "primary" : "secondary" }
+                          onClick={(event) => handleStatusStandardClick(event, index, index2)}
+                          className={classes.buttonRight}
+                          variant="contained"
+                          size="small"
+                        >
+                          {(standard.status) ? "Desativar" : "Ativar" }
+                        </Button>
+                      </CardContent>
                     </Paper>
                   ))}
                 </div>
