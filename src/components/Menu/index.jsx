@@ -30,21 +30,6 @@ export default function Menu(props) {
       setModulesList(storageModulesListParsed)
       setModulesListDefault(storageModulesListParsed)
     }
-
-    if (storageModulesList == null) {
-      loader(true)
-      ModulesService.get(loader)
-        .then((response) => {
-          loader(false)
-          setModulesList(response)
-          setModulesListDefault(response)
-          localStorage.setItem('modulesList', JSON.stringify(response))
-        })
-        .catch((error) => {
-          loader(false)
-          console.log(error)
-        })
-    }
   }, [])
 
   const updateInput = async (event) => {

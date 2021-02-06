@@ -5,32 +5,35 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListSubheader from '@material-ui/core/ListSubheader'
 
-import PeopleIcon from '@material-ui/icons/People'
+import MenuIcon from '@material-ui/icons/Menu'
+import GavelIcon from '@material-ui/icons/Gavel'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 
 export const mainListItems = (
   <div>
+    <ListItem button component="a" href="/menu">
+      <ListItemIcon>
+        <MenuIcon />
+      </ListItemIcon>
+      <ListItemText primary="Menu" />
+    </ListItem>
+
     <ListItem button component="a" href="/dashboard">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button component="a" href="/">
+
+    <ListItem button component="a" href="/compliance">
       <ListItemIcon>
-        <ShoppingCartIcon />
+        <GavelIcon />
       </ListItemIcon>
-      <ListItemText primary="Produtos" />
+      <ListItemText primary="Normas" />
     </ListItem>
-    <ListItem button component="a" href="/">
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Usuarios" />
-    </ListItem>
-    <ListItem button>
+
+    <ListItem button component="a" href="/login">
       <ListItemIcon>
         <ExitToAppIcon />
       </ListItemIcon>

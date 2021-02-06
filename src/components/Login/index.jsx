@@ -38,13 +38,16 @@ export default function Login(props) {
             auth.login({email, password})
               .then((response) => {
                 loader(false)
-                if (response.data.hasOwnProperty('token')) {
-                  localStorage.setItem('token', response.data.token)
+                if (response.data.hasOwnProperty('user')) {
+                  localStorage.setItem('userToken', response.data.user.token)
+                  localStorage.setItem('modulesList', JSON.stringify(response.data.modules))
+                  localStorage.setItem('gatewayToken', response.data.gateway.token)
 
                   props.history.push("/menu")
                 }
               })
               .catch((error) => {
+                console.log(error)
                 loader(false)
                 console.log(error)
               })

@@ -22,7 +22,7 @@ class Auth {
   }
 
   isAuthenticated() {
-    return localStorage.getItem('token') !== null;
+    return localStorage.getItem('userToken') !== null;
   }
 }
 

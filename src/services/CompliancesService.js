@@ -2,7 +2,11 @@ const axios = require('axios').default
 
 const getCompliances = async () => {
   return new Promise((resolve, reject) => {
-    axios.get(process.env.REACT_APP_MSNORMAS_COMPLIANCES)
+    axios.get(process.env.REACT_APP_MSNORMAS_COMPLIANCES, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('gatewayToken')}`
+      }
+    })
       .then((response) => {
         resolve(response.data)
       })
@@ -14,7 +18,11 @@ const getCompliances = async () => {
 
 const createCompliances = async (compliances) => {
   return new Promise((resolve, reject) => {
-    axios.post(process.env.REACT_APP_MSNORMAS_COMPLIANCES, compliances)
+    axios.post(process.env.REACT_APP_MSNORMAS_COMPLIANCES, compliances, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('gatewayToken')}`
+      }
+    })
       .then((response) => {
         resolve(response)
       })
@@ -26,7 +34,11 @@ const createCompliances = async (compliances) => {
 
 const updateCompliance = async (compliance) => {
   return new Promise((resolve, reject) => {
-    axios.put(process.env.REACT_APP_MSNORMAS_COMPLIANCES, compliance)
+    axios.put(process.env.REACT_APP_MSNORMAS_COMPLIANCES, compliance, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('gatewayToken')}`
+      }
+    })
       .then((response) => {
         resolve(response)
       })
@@ -38,7 +50,11 @@ const updateCompliance = async (compliance) => {
 
 const deleteCompliance = async (compliance) => {
   return new Promise((resolve, reject) => {
-    axios.delete(process.env.REACT_APP_MSNORMAS_COMPLIANCES, { data: compliance })
+    axios.delete(process.env.REACT_APP_MSNORMAS_COMPLIANCES, { data: compliance }, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('gatewayToken')}`
+      }
+    })
       .then((response) => {
         resolve(response)
       })
