@@ -15,6 +15,7 @@ export default function SearchAppBar({ updateInput, ...props }) {
   const classes = useStyles()
   const exitApp = () => {
     props.history.push("/")
+    localStorage.clear()
   }
 
   return (

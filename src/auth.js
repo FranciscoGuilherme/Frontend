@@ -16,13 +16,22 @@ class Auth {
     })
   }
 
-  logout(cb) {
-    this.authenticated = false
-    cb()
+  isAuthenticated() {
+    return localStorage.getItem('userToken') !== null
   }
 
-  isAuthenticated() {
-    return localStorage.getItem('userToken') !== null;
+  authenticate() {
+    return new Promise((resolve, reject) => {
+      axios.get(process.env.REACT_APP_MSUSERS_IS_ACTIVE, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('userToken')}`
+        }
+      })
+        .then((response) => {})
+        .catch((error) => {
+          localStorage.clear()
+        })
+    })
   }
 }
 

@@ -43,7 +43,7 @@ export default function App() {
 
         <ProtectedRoute exact path="/menu" component={Menu} />
         <ProtectedRoute exact path="/dashboard" component={Dashboard} name="Dashboard" />
-        <ProtectedRoute exact path="/compliance" component={Compliance} name="Compliance" />
+        <ProtectedRoute exact path="/compliance" component={Compliance} name="Gestão de normas" />
       </LoaderContext.Provider>
     </>
   )
