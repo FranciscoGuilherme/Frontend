@@ -12,6 +12,7 @@ import {
 import { images } from "./assets/images"
 import { useStyles } from "./assets/styles"
 
+import auth from "~/auth"
 import Toolbar from "~/components/Menu/Toolbar"
 import LoaderContext from "~/contexts/LoaderContext"
 import ModulesService from "~/services/ModulesService"
@@ -23,6 +24,7 @@ export default function Menu(props) {
   const [modulesListDefault, setModulesListDefault] = useState([])
 
   useEffect(() => {
+    auth.authenticate()
     const storageModulesList = localStorage.getItem('modulesList')
 
     if (storageModulesList !== null) {

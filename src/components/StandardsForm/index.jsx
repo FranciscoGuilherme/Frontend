@@ -16,13 +16,11 @@ function createData(code, name, desc) {
 }
 
 const rows = [
-  createData('code1', 'name', 'desc'),
-  createData('code2', 'name', 'desc'),
-  createData('code3', 'name', 'desc'),
-  createData('code4', 'name', 'desc'),
-  createData('code5', 'name', 'desc'),
-  createData('code6', 'name', 'desc'),
-  createData('code15', 'name', 'desc')
+  createData('ISO A', 'Nome', 'Descrição'),
+  createData('ISO B', 'Nome', 'Descrição'),
+  createData('ISO C', 'Nome', 'Descrição'),
+  createData('ISO D', 'Nome', 'Descrição'),
+  createData('ISO E', 'Nome', 'Descrição')
 ];
 
 export default function StandardsForm({ method, identifier }) {

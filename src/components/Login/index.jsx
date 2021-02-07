@@ -59,7 +59,7 @@ export default function Login(props) {
         </Icon>
 
         <Typography component="h1" variant="h5" align="center">
-          Sign In
+          Bem vindo ao Sigo
         </Typography>
 
         <TextField

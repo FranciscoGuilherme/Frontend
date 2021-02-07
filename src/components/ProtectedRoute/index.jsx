@@ -7,8 +7,6 @@ import Main from "~/components/Main"
 
 
 export default function Dashboard({component: Component, name, ...rest}) {
-  auth.authenticate()
-
   return (
     <Route
       {...rest}
